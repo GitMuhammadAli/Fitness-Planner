@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+*{
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+span{
+  font-weight: inherit;
+  font-family: inherit;
+}
+
+.buttonShadow{
+  box-shadow: 3px 3px 0 0 #946f6f;
+
+}
+
+.buttonShadow:hover{
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 0 #946f6f;
+}
