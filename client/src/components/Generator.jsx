@@ -1,43 +1,46 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import SectionWrapper from "./SectionWrapper";
-
-function Header(props) {
-  const { index, title, description } = props;
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-center gap-2">
-        <p className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#8d7c7c]">{index}</p>
-        <h4 className="text-xl sm:text-2xl md:text-2xl">{title}</h4>
-      </div>
-      <p className="text-sm sm:text-base mx-auto">{description}</p>
-    </div>
-  );
-}
+import useFetchCategories from "../hooks/useFetchCategories";
+import Header from "./Header";
 
 export default function Generator() {
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    axios.get('http://localhost:9000/workoutsCategory', { withCredentials: true })
-      .then(response => setCategories(response.data))
-      .catch(err => setError(err.message));
-  }, []);
+  const { categories, error } = useFetchCategories();
 
   if (error) return <p>Error fetching categories: {error}</p>;
 
   return (
-    <SectionWrapper header={"Produce Your WorkOut"} title={["It's", "Huge ", "o'clock "]}>
-      <Header index={'01'} title={'Pick your poison'} description={"Select the workout you wish to endure."} />
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 " >
+    <SectionWrapper
+      header={"Produce Your WorkOut"}
+      title={["It's", "Huge ", "o'clock "]}
+    >
+      <Header
+        index={"01"}
+        title={"Pick your poison"}
+        description={"Select the workout you wish to endure."}
+      />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 ">
         {categories.map((cat, index) => (
-          <button className=" bg-neutral-950 border-[#946f6f] border border-solid py-4 rounded-lg  text-sm sm:text-base text-[#946f6f] hover:bg-[#946f6f] hover:text-neutral-950 transition-colors duration-300"
-          key={index}>
-              <p className="capitalize ">{cat.category.replaceAll("_", " ")}</p>
-            
+          <button
+            className=" bg-neutral-950 border-[#946f6f] border border-solid py-4 rounded-lg  text-sm sm:text-base text-[#946f6f] hover:bg-[#946f6f] hover:text-neutral-950 transition-colors duration-300"
+            key={index}
+          >
+            <p className="capitalize ">{cat.category.replaceAll("_", " ")}</p>
           </button>
         ))}
+      </div>
+
+      <Header
+        index={"02"}
+        title={"Lock in your routine"}
+        description={"Select the Muscle group you wish to train."}
+      />
+      <div className="bg-neutral-950 border-[#946f6f] border border-solid py-4 rounded-lg flex justify-center items-center p-4">
+        <div className="relative flex items-center justify-between w-full">
+          <p className="flex justify-center items-center w-full">
+            Select the Musle Group
+          </p>
+          <i className="fa-solid fa-circle-chevron-down"></i>
+        </div>
       </div>
     </SectionWrapper>
   );
