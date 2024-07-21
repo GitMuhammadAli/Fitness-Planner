@@ -1,12 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import SectionWrapper from "./SectionWrapper";
-import useFetchCategories from "../hooks/useFetchCategories";
+import {
+  useFetchCategories,
+  WorkoutindividualType,
+  useFetchUpperLowerTypeWorkouts,
+  useFetchBodybuilderSplitTypeWorkouts,
+  useFetchBroSplitTypeWorkouts,
+} from "../hooks/useFetchCategories";
+import useFetchScheme from "../hooks/userFetchSchemes";
 import Header from "./Header";
+import Model from "./Model";
+import Schemes from "./Schemes";
+import CategoryButtons from "./Categories";
 
 export default function Generator() {
-  const { categories, error } = useFetchCategories();
+  const { categories, error: categoryError } = useFetchCategories();
+  const { individualType, error: individualTypeError } = WorkoutindividualType();
+  const { upperLowerType, error: upperLowerError } = useFetchUpperLowerTypeWorkouts();
+  const { bodybuilderSplitType, error: bodybuilderSplitError } = useFetchBodybuilderSplitTypeWorkouts();
+  const { broSplitType, error: broSplitError } = useFetchBroSplitTypeWorkouts();
 
-  if (error) return <p>Error fetching categories: {error}</p>;
+  const { schemes, error: schemeError } = useFetchScheme();
+  const [selectedCategory, setSelectedCategory] = useState("Select the Muscle Group");
+
+  const handleSetSelectedCategory = (category) => {
+    setSelectedCategory(category);
+    setShowModel(false);
+  };
+
+
+
+
+  const getWorkoutTypes = () => {
+    switch (selectedCategory) {
+      case "individual":
+        return individualType;
+      case "upper_lower":
+        return upperLowerType;
+      case "bodybuilder_split":
+        return bodybuilderSplitType;
+      case "bro_split":
+        return broSplitType;
+      default:
+        return [];
+    }
+  };
 
   return (
     <SectionWrapper
@@ -18,30 +56,35 @@ export default function Generator() {
         title={"Pick your poison"}
         description={"Select the workout you wish to endure."}
       />
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 ">
-        {categories.map((cat, index) => (
-          <button
-            className=" bg-neutral-950 border-[#946f6f] border border-solid py-4 rounded-lg  text-sm sm:text-base text-[#946f6f] hover:bg-[#946f6f] hover:text-neutral-950 transition-colors duration-300"
-            key={index}
-          >
-            <p className="capitalize ">{cat.category.replaceAll("_", " ")}</p>
-          </button>
-        ))}
-      </div>
+
+      {categoryError ? (
+        <p>Error fetching categories: {categoryError}</p>
+      ) : (
+        <CategoryButtons
+          categories={categories}
+          onCategorySelect={handleSetSelectedCategory}
+        />
+      )}
 
       <Header
         index={"02"}
         title={"Lock in your routine"}
         description={"Select the Muscle group you wish to train."}
       />
-      <div className="bg-neutral-950 border-[#946f6f] border border-solid py-4 rounded-lg flex justify-center items-center p-4">
-        <div className="relative flex items-center justify-between w-full">
-          <p className="flex justify-center items-center w-full">
-            Select the Musle Group
-          </p>
-          <i className="fa-solid fa-circle-chevron-down"></i>
-        </div>
-      </div>
+      <Model
+        selectedCategory={selectedCategory}
+        workoutTypes={getWorkoutTypes()}
+      />
+      <Header
+        index={"03"}
+        title={"Become Enterprise"}
+        description={"Select the Workout you wish to Endure."}
+      />
+      {schemeError ? (
+        <p>Error fetching schemes: {schemeError}</p>
+      ) : (
+        <Schemes Schemes={schemes} />
+      )}
     </SectionWrapper>
   );
 }
