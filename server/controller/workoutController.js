@@ -103,7 +103,14 @@ const workoutController = {
     } catch (err) {
       res.status(500).json({ message: "Internal Server Error", error: err.message });
     }
+  },
+
+
+  async getdata(req, res) {
+   const data =  req.body;
+   console.log(data);
   }
+
 };
 
 module.exports = workoutController;

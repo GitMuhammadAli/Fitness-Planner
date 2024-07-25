@@ -27,3 +27,7 @@ export const fetchUpperLowerTypeWorkouts = () => {
 export const fetchExercises = () => {
   return axios.get('http://localhost:9000/exercises', { withCredentials: true });
 };
+
+export const senddata = (data) => {
+  return axios.post('http://localhost:9000/data', data, { withCredentials: true });
+};

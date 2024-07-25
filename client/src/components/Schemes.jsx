@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react';
 
-function Schemes({Schemes})  {
+function Schemes({ Schemes, sendSchemes }) {
+  const [selectedScheme, setSelectedScheme] = useState(null);
+
+  const onCategorySelect = (e) => {
+    const selected = Schemes.find(scheme => scheme.name === e);
+    setSelectedScheme(selected);
+    sendSchemes(selected.name);
+  };
+
+  // selectedScheme && console.log(selectedScheme.name);
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
       {Schemes.map((cat, index) => (
@@ -13,7 +22,7 @@ function Schemes({Schemes})  {
         </button>
       ))}
     </div>
-  )
+  );
 }
 
-export default Schemes
+export default Schemes;

@@ -13,5 +13,6 @@ router.get('/upperLowerWorkouts', workoutController.getUpperLowerWorkoutstype);
 router.get('/exercises', workoutController.getExercises);
 router.get('/exercises/:id', workoutController.getExerciseById);
 router.get('/workoutsSchemes', workoutController.getWorkoutsSchemes);
+router.post ('/data' , workoutController.getdata);
 
 module.exports = router;

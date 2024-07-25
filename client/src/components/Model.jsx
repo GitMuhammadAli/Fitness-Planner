@@ -36,9 +36,9 @@ const Model = ({ selectedCategory, workoutTypes, onSelectedItemsChange }) => {
     }
   
     setSelectedItems(newSelectedItems);
-    // onSelectedItemsChange(newSelectedItems);
+    onSelectedItemsChange(newSelectedItems);
   };
-  // Reset selected items when the selected category changes
+
   useEffect(() => {
     setSelectedItems([]);
   }, [selectedCategory]);
@@ -66,7 +66,7 @@ const Model = ({ selectedCategory, workoutTypes, onSelectedItemsChange }) => {
                   return (
                     <button 
                       key={index} 
-                      className={`uppercase hover:bg-[#946f6f] hover:px-2 hover:text-neutral-950 rounded-md duration-75 ${isSelected ? 'bg-[#946f6f] px-2' : ''}`}
+                      className={`uppercase hover:bg-[#946f6f] hover:px-2 hover:text-neutral-950 rounded-md duration-75 border-2 border-neutral-950  ${isSelected ? 'bg-[#946f6f] px-2 ' : ''}`}
                       onClick={() => handleItemClick(item)}
                     >
                       {itemText}
