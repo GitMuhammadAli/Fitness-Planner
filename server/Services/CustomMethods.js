@@ -1,4 +1,4 @@
-const { Workout, Sequelize, Scheme } = require("../models");
+const { Workout, Sequelize, Scheme , Tempo , Exercise } = require("../models");
 
 exports.getWorkoutsCategory = async () => {
   return await Workout.findAll({
@@ -60,7 +60,21 @@ exports.getUpperLowerWorkoutstype = async () => {
 
 exports.getWorkoutSchemes = async () => {
   return await Scheme.findAll({
-    attributes: ["name"],
+    attributes: [ [
+      Sequelize.fn("DISTINCT",Sequelize.col("name")),
+      "name"
+    ]],
   });
 };
+
+exports.getWorkouts = async (SelectedCategory , SelectedItem , SelectedScheme) => {
+  return await Workout.findAll({
+    attributes: [
+      "name",
+      "type",
+      "muscles",
+      "description"
+    ],
+  });
+}
 

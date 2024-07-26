@@ -10,36 +10,44 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING, // Adjust length if needed
+        type: Sequelize.STRING,
         allowNull: false
       },
       type: {
-        type: Sequelize.STRING(1000), // Adjust length if needed
+        type: Sequelize.STRING(1000),
         allowNull: false
       },
       meta: {
-        type: Sequelize.JSON, // JSON type for structured data
+        type: Sequelize.JSON,
         allowNull: true
       },
       variants: {
-        type: Sequelize.JSON, // JSON type for structured data
+        type: Sequelize.JSON,
         allowNull: true
       },
       unit: {
-        type: Sequelize.STRING(1000), // Adjust length if needed
+        type: Sequelize.STRING(1000),
         allowNull: true
       },
       muscles: {
-        type: Sequelize.ARRAY(Sequelize.STRING), // Handle arrays of strings
+        type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: true
       },
       description: {
-        type: Sequelize.STRING(1000), // Adjust length if needed
+        type: Sequelize.STRING(1000),
         allowNull: true
       },
       substitutes: {
-        type: Sequelize.ARRAY(Sequelize.STRING), // Handle arrays of strings
-        allowNull: false
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: true
+      },
+      workouts: {
+        type: Sequelize.JSON,
+        allowNull: true
+      },
+      schemes: {
+        type: Sequelize.JSON,
+        allowNull: true
       },
       createdAt: {
         allowNull: false,

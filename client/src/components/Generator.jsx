@@ -13,16 +13,22 @@ import Model from "./Model";
 import Schemes from "./Schemes";
 import CategoryButtons from "./Categories";
 import { senddata } from "../Api";
+import Button from "./Button";
 
 export default function Generator() {
   const { categories, error: categoryError } = useFetchCategories();
-  const { individualType, error: individualTypeError } = WorkoutindividualType();
-  const { upperLowerType, error: upperLowerError } = useFetchUpperLowerTypeWorkouts();
-  const { bodybuilderSplitType, error: bodybuilderSplitError } = useFetchBodybuilderSplitTypeWorkouts();
+  const { individualType, error: individualTypeError } =
+    WorkoutindividualType();
+  const { upperLowerType, error: upperLowerError } =
+    useFetchUpperLowerTypeWorkouts();
+  const { bodybuilderSplitType, error: bodybuilderSplitError } =
+    useFetchBodybuilderSplitTypeWorkouts();
   const { broSplitType, error: broSplitError } = useFetchBroSplitTypeWorkouts();
   const { schemes, error: schemeError } = useFetchScheme();
 
-  const [selectedCategory, setSelectedCategory] = useState("Select the Muscle Group");
+  const [selectedCategory, setSelectedCategory] = useState(
+    "Select the Muscle Group"
+  );
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedScheme, setSelectedScheme] = useState(null);
 
@@ -40,17 +46,19 @@ export default function Generator() {
   };
 
   const sendSelectedItemsToBackend = async () => {
+    console.log("inseide sendSelectedItemsToBackend");
     const data = {
       selectedCategory,
       selectedItems,
       selectedScheme,
     };
 
+    console.log("Sending data to backend:", data);
     try {
       const response = await senddata(data);
-      console.log('Backend response:', response.data);
+      console.log("Backend response:", response.data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -70,19 +78,42 @@ export default function Generator() {
   };
 
   return (
-    <SectionWrapper header={"Produce Your WorkOut"} title={["It's", "Huge ", "o'clock "]}>
-      <Header index={"01"} title={"Pick your poison"} description={"Select the workout you wish to endure."} />
+    <SectionWrapper
+      header={"Produce Your WorkOut"}
+      title={["It's", "Huge ", "o'clock "]}
+    >
+      <Header
+        index={"01"}
+        title={"Pick your poison"}
+        description={"Select the workout you wish to endure."}
+      />
 
       {categoryError ? (
         <p>Error fetching categories: {categoryError}</p>
       ) : (
-        <CategoryButtons categories={categories} onCategorySelect={handleSetSelectedCategory} />
+        <CategoryButtons
+          categories={categories}
+          onCategorySelect={handleSetSelectedCategory}
+        />
       )}
 
-      <Header index={"02"} title={"Lock in your routine"} description={"Select the Muscle group you wish to train."} />
+      <Header
+        index={"02"}
+        title={"Lock in your routine"}
+        description={"Select the Muscle group you wish to train."}
+      />
 
-      {individualTypeError || upperLowerError || bodybuilderSplitError || broSplitError ? (
-        <p>Error fetching workout types: {individualTypeError || upperLowerError || bodybuilderSplitError || broSplitError}</p>
+      {individualTypeError ||
+      upperLowerError ||
+      bodybuilderSplitError ||
+      broSplitError ? (
+        <p>
+          Error fetching workout types:{" "}
+          {individualTypeError ||
+            upperLowerError ||
+            bodybuilderSplitError ||
+            broSplitError}
+        </p>
       ) : (
         <Model
           selectedCategory={selectedCategory}
@@ -91,14 +122,18 @@ export default function Generator() {
         />
       )}
 
-      <Header index={"03"} title={"Become Enterprise"} description={"Select the Workout you wish to Endure."} />
+      <Header
+        index={"03"}
+        title={"Become Enterprise"}
+        description={"Select the Workout you wish to Endure."}
+      />
       {schemeError ? (
         <p>Error fetching schemes: {schemeError}</p>
       ) : (
         <Schemes Schemes={schemes} sendSchemes={handleSelectedSchemes} />
       )}
 
-      <button onClick={sendSelectedItemsToBackend}>Submit</button>
+      <Button onClick={sendSelectedItemsToBackend}>Generate Workout</Button>
     </SectionWrapper>
   );
 }
