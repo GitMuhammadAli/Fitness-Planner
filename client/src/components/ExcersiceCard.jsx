@@ -9,12 +9,14 @@ export default function ExerciseCard(props) {
     }
 
     return (
-        <div className='p-4 rounded-md flex flex-col gap-4 bg-neutral-950 sm:flex-wrap'>
-            <div className='flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-x-4'>
+        <div className='p-4 rounded-md flex flex-col gap-4 bg-neutral-950 sm:flex-wrap lg:-mx-10'>
+            <div className='flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-x-4 '>
                 <h4 className='text-3xl hidden sm:inline sm:text-4xl md:text-5xl font-semibold text-[#8d7c7c]'>
                     {i + 1}
                 </h4>
-                <h2 className=' capitalize whitespace-nowrap truncate max-w-full text-lg sm:text-xl md:text-2xl flex-1 sm:text-center'>{exercise.name.replaceAll('_' , " ")}</h2>
+                <h2 className='capitalize whitespace-nowrap truncate max-w-full text-lg sm:text-xl md:text-2xl flex-1 sm:text-center'>
+                    {exercise.name.replaceAll('_', ' ')}
+                </h2>
                 <p className='text-sm text-[#946f6f]'>{exercise.type}</p>
             </div>
             <div className='flex flex-col'>
@@ -27,6 +29,17 @@ export default function ExerciseCard(props) {
                     <div key={index} className='text-sm'>{val}</div>
                 ))}
             </div>
+          
+            {exercise.variants && (
+                    <div className='flex flex-col p-2 rounded border-[1.5px] border-solid border-[#232222] w-full'>
+                        <h3 className='capitalize text-[#946f6f] text-sm'>Variants</h3>
+                        {Object.entries(exercise.variants).map(([key, value]) => (
+                            <div key={key} className='text-sm capitalize'>
+                                <strong className='text-[#8d7c7c]' >{key.replace("_" , " ")  }:</strong> {value}
+                            </div>
+                        ))}
+                    </div>
+                )}
 
             <div className='grid grid-cols-2 sm:grid-cols-4 sm:place-items-center gap-2'>
                 {exercise.ratio && (
@@ -44,10 +57,14 @@ export default function ExerciseCard(props) {
                 {exercise.rest && exercise.rest.length > 0 && (
                     <div className='flex flex-col p-2 rounded border-[1.5px] border-solid border-[#232222] w-full'>
                         <h3 className='capitalize text-[#946f6f] text-sm'>Rest</h3>
-                        <p className='font-medium'>{exercise.rest.join(' to ')} sec</p>
+                        <p className='font-medium'>{exercise.rest[0]} sec</p>
                     </div>
                 )}
-                <button onClick={handleSetIncrement} className='flex flex-col p-2 rounded border-[1.5px] duration-200 border-solid border-[#dfb6b6] hover:border-[#946f6f] w-full'>
+                
+                <button 
+                    onClick={handleSetIncrement} 
+                    className='flex flex-col p-2 rounded border-[1.5px] duration-200 border-solid border-[#dfb6b6] hover:border-[#946f6f] w-full'
+                >
                     <h3 className='text-[#946f6f] text-sm capitalize'>Sets completed</h3>
                     <p className='font-medium'>{setsCompleted} / 5</p>
                 </button>
