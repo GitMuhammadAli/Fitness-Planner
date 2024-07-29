@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export default function ExerciseCard(props) {
   const { exercise, i } = props;
   const [setsCompleted, setSetsCompleted] = useState(0);
-  const maxSets = exercise.sets || 5;
+  const maxSets =  5;
 
   const handleSetIncrement = () => {
     setSetsCompleted((prevSets) => Math.min(prevSets + 1, maxSets));
@@ -35,12 +35,7 @@ export default function ExerciseCard(props) {
       </div>
 
       <div className="flex flex-col bg-neutral-950 rounded gap-2">
-        {exercise.description &&
-          exercise.description.split("___").map((val, index) => (
-            <div key={index} className="text-sm">
-              {val}
-            </div>
-          ))}
+        {exercise.description }
       </div>
 
       {exercise.variants && (

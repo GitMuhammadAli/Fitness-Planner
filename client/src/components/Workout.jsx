@@ -10,14 +10,15 @@ export default function Workout() {
   
     const handleSetProccededData = (data) => {
       setProccededData(data);
-      setIsLoading(false);
+      setIsLoading(true);
     };
   return (
     <>
     <Generator setProccededData={handleSetProccededData} setIsLoading={setIsLoading}  />
       {isLoading  ? (
         <Loading />
-      ) : (
+      ) 
+      : (
         ProccededData && <WorkoutExcersice data={ProccededData}  />
       )}
     </>

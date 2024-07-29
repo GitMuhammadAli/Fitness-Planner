@@ -39,7 +39,7 @@ export default function Generator({ setProccededData, setIsLoading }) {
   const [selectedScheme, setSelectedScheme] = useState(
     "Select the Scheme Group"
   );
-  const [arrowVisible, setArrowVisible] = useState(false); 
+  const [arrowVisible, setArrowVisible] = useState(false);
 
   const handleSetWorkout = (category) => {
     setWorkout(category);
@@ -58,7 +58,7 @@ export default function Generator({ setProccededData, setIsLoading }) {
   const sendMuscleToBackend = async () => {
     setIsLoading(true);
     setErrorMessage("");
-    setArrowVisible(false); 
+    setArrowVisible(false);
     if (!Workout || Workout === "Select the Muscle Group") {
       setErrorMessage("Please select a workout type.");
       setIsLoading(false);
@@ -104,7 +104,7 @@ export default function Generator({ setProccededData, setIsLoading }) {
         return;
       }
 
-      setArrowVisible(true); 
+      setArrowVisible(true);
     } catch (error) {
       console.error("Error:", error);
       setErrorMessage("An unexpected error occurred. Please try again.");
@@ -136,12 +136,12 @@ export default function Generator({ setProccededData, setIsLoading }) {
     <SectionWrapper
       id={"generate"}
       header={"Produce Your WorkOut"}
-      title={["It's", "Huge ", "o'clock "]}
+      title={["It's", "Workout ", "o'clock "]}
     >
       <Header
         index={"01"}
-        title={"Pick your poison"}
-        description={"Select the workout you wish to endure."}
+        title={"Choose Your Challenge"}
+        description={"Select the workout you'll tackle today."}
       />
 
       {categoryError ? (
@@ -157,8 +157,8 @@ export default function Generator({ setProccededData, setIsLoading }) {
 
       <Header
         index={"02"}
-        title={"Lock in your routine"}
-        description={"Select the Muscle group you wish to train."}
+        title={"Set Your Routine"}
+        description={"Choose the muscle group you want to target."}
       />
 
       {individualTypeError ||
@@ -182,11 +182,12 @@ export default function Generator({ setProccededData, setIsLoading }) {
         />
       )}
 
-      <Header
-        index={"03"}
-        title={"Become Enterprise"}
-        description={"Select the Workout you wish to Endure."}
-      />
+<Header
+  index={"03"}
+  title={"Embrace the Challenge"}
+  description={"Choose the workout you'll conquer."}
+/>
+
       {schemeError ? (
         <p>Error fetching schemes: {schemeError}</p>
       ) : (
@@ -206,17 +207,26 @@ export default function Generator({ setProccededData, setIsLoading }) {
           ClickScroll();
         }}
       >
-        Generate Workout 
+        Generate Workout
         {arrowVisible && (
-        <div className="flex justify-center mt-4">
-          <svg className="animate-bounce w-6 h-6 text-[#946f6f]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 21L12 3M12 21L4 13M12 21L20 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-      )}
+          <div className="flex justify-center mt-4">
+            <svg
+              className="animate-bounce w-6 h-6 text-[#946f6f]"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 21L12 3M12 21L4 13M12 21L20 13"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        )}
       </Button>
-
-      
     </SectionWrapper>
   );
 }
