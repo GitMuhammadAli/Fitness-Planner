@@ -130,19 +130,26 @@ const workoutController = {
   async getdata(req, res) {
     try {
       const { Workout, Muscle, Scheme } = req.body;
-
+  
+      const missingParams = [];
+      if (!Workout) missingParams.push('Workout');
+      if (!Muscle) missingParams.push('Muscle');
+      if (!Scheme) missingParams.push('Scheme');
+  
+      if (missingParams.length > 0) {
+        return res.status(400).json({ error: `Missing required parameters: ${missingParams.join(', ')}` });
+      }
+  
       console.log(Workout, Muscle, Scheme);
       const results = await CustomMethods.getWorkouts(Workout, Muscle, Scheme);
-      console.log( "data was" + results);
+      console.log("data was " + results);
       res.status(200).json(results);
-
-      
+  
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-   
   },
-
+  
  
 
  

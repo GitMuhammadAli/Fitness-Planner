@@ -26,13 +26,25 @@ export default function Generator({ setProccededData, setIsLoading }) {
   const { broSplitType, error: broSplitError } = useFetchBroSplitTypeWorkouts();
   const { schemes, error: schemeError } = useFetchScheme();
 
-  const [Workout, setWorkout] = useState("Select the Muscle Group");
+  const [Workout, setWorkout] = useState("Please select a muscle group");
   const [Muscle, setMuscle] = useState([]);
   const [Scheme, setScheme] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(
+    "Select the Muscle Group"
+  );
+  const [selectedtype, setSelectedtype] = useState(
+    "Select the Muscle Category Group"
+  );
+  const [selectedScheme, setSelectedScheme] = useState(
+    "Select the Scheme Group"
+  );
+  const [arrowVisible, setArrowVisible] = useState(false); 
 
   const handleSetWorkout = (category) => {
     setWorkout(category);
     setMuscle([]);
+    setSelectedCategory(category);
   };
 
   const handleMuscleChange = (items) => {
@@ -43,35 +55,66 @@ export default function Generator({ setProccededData, setIsLoading }) {
     setScheme(scheme);
   };
 
-
   const sendMuscleToBackend = async () => {
-    setIsLoading(true);  
-    console.log("inside sendMuscleToBackend");
+    setIsLoading(true);
+    setErrorMessage("");
+    setArrowVisible(false); 
+    if (!Workout || Workout === "Select the Muscle Group") {
+      setErrorMessage("Please select a workout type.");
+      setIsLoading(false);
+      return;
+    }
+
+    if (Muscle.length === 0) {
+      setErrorMessage("Please select at least one muscle group.");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!Scheme) {
+      setErrorMessage("Please select a scheme.");
+      setIsLoading(false);
+      return;
+    }
+
     const data = {
       Workout,
       Muscle,
       Scheme,
     };
 
-
-
     console.log("Sending data to backend:", data);
+
     try {
       const response = await ProceedData(data);
       console.log("Backend response:", response.data);
+
+      if (!response.data) {
+        setErrorMessage("Missing data in the response from ProceedData.");
+        return;
+      }
+
       setProccededData(response.data);
 
       const sendResponse = await senddata(data);
       console.log("Backend response:", sendResponse.data);
+
+      if (!sendResponse) {
+        setErrorMessage("Error sending data to the backend.");
+        return;
+      }
+
+      setArrowVisible(true); 
     } catch (error) {
       console.error("Error:", error);
+      setErrorMessage("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   function ClickScroll() {
-    window.location.href = '#MakeWorkout';
+    window.location.href = "#MakeWorkout";
   }
 
   const getWorkoutTypes = () => {
@@ -90,7 +133,8 @@ export default function Generator({ setProccededData, setIsLoading }) {
   };
 
   return (
-    <SectionWrapper id={'generate'}
+    <SectionWrapper
+      id={"generate"}
       header={"Produce Your WorkOut"}
       title={["It's", "Huge ", "o'clock "]}
     >
@@ -106,6 +150,8 @@ export default function Generator({ setProccededData, setIsLoading }) {
         <CategoryButtons
           categories={categories}
           onCategorySelect={handleSetWorkout}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
         />
       )}
 
@@ -131,6 +177,8 @@ export default function Generator({ setProccededData, setIsLoading }) {
           Workout={Workout}
           workoutTypes={getWorkoutTypes()}
           onMuscleChange={handleMuscleChange}
+          selectedtype={selectedtype}
+          setSelectedtype={setSelectedtype}
         />
       )}
 
@@ -142,10 +190,33 @@ export default function Generator({ setProccededData, setIsLoading }) {
       {schemeError ? (
         <p>Error fetching schemes: {schemeError}</p>
       ) : (
-        <Schemes Schemes={schemes} sendSchemes={handleSchemes} />
+        <Schemes
+          Schemes={schemes}
+          sendSchemes={handleSchemes}
+          selectedScheme={selectedScheme}
+          setSelectedScheme={setSelectedScheme}
+        />
       )}
 
-      <Button onClick={() => { sendMuscleToBackend(); ClickScroll(); }}>Generate Workout</Button>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+
+      <Button
+        onClick={() => {
+          sendMuscleToBackend();
+          ClickScroll();
+        }}
+      >
+        Generate Workout 
+        {arrowVisible && (
+        <div className="flex justify-center mt-4">
+          <svg className="animate-bounce w-6 h-6 text-[#946f6f]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21L12 3M12 21L4 13M12 21L20 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+      )}
+      </Button>
+
+      
     </SectionWrapper>
   );
 }
