@@ -52,8 +52,7 @@ export default function Generator({ setProccededData, setIsLoading }) {
       Muscle,
       Scheme,
     };
-    
-    window.location.href = '#MakeWorkout';
+
 
 
     console.log("Sending data to backend:", data);
@@ -66,8 +65,14 @@ export default function Generator({ setProccededData, setIsLoading }) {
       console.log("Backend response:", sendResponse.data);
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  function ClickScroll() {
+    window.location.href = '#MakeWorkout';
+  }
 
   const getWorkoutTypes = () => {
     switch (Workout) {
@@ -140,7 +145,7 @@ export default function Generator({ setProccededData, setIsLoading }) {
         <Schemes Schemes={schemes} sendSchemes={handleSchemes} />
       )}
 
-      <Button onClick={sendMuscleToBackend}  >Generate Workout</Button>
+      <Button onClick={() => { sendMuscleToBackend(); ClickScroll(); }}>Generate Workout</Button>
     </SectionWrapper>
   );
 }

@@ -18,7 +18,7 @@ export default function Workout() {
       {isLoading  ? (
         <Loading />
       ) : (
-        ProccededData && <WorkoutExcersice data={ProccededData} id={'MakeWorkout'} />
+        ProccededData && <WorkoutExcersice data={ProccededData}  />
       )}
     </>
   );

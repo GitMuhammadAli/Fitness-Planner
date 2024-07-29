@@ -8,7 +8,7 @@ export default function WorkoutExercise({ data }) {
   const isUpperLower = data.includes('upper_lower');
 
   return (
-    <SectionWrapper id={'workout'} header={"Welcome to"} title={['The', 'DANGER', 'zone']}>
+    <SectionWrapper id={'MakeWorkout'} header={"Welcome to"} title={['The', 'DANGER', 'zone']}>
       <div className='flex flex-col gap-4'>
         {isUpperLower ? (
           <p className='flex justify-center items-center px-8 mx-auto py-4 rounded-lg bg-neutral-950 text-lg font-semibold w-full'>
