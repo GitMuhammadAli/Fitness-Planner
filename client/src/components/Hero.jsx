@@ -2,6 +2,11 @@ import React from "react";
 import Button from "./Button";
 
 export default function Hero() {
+
+  function handleClick() {
+    window.location.href = '#generate';
+  }
+
   return (
     <div className="min-h-screen flex flex-col gap-10 items-center justify-center text-center max-w-[800px] w-full mx-auto p-4">
       <div className="flex flex-col gap-4">
@@ -18,7 +23,7 @@ export default function Hero() {
         to enhance your fitness journey!
       </p>
 
-      <Button>
+      <Button onClick={handleClick}>
         Accept & Begin
       </Button>
     </div>

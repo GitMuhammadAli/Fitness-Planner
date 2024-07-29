@@ -81,7 +81,7 @@ export default function Generator({ setProccededData, setIsLoading }) {
   };
 
   return (
-    <SectionWrapper
+    <SectionWrapper id={'generate'}
       header={"Produce Your WorkOut"}
       title={["It's", "Huge ", "o'clock "]}
     >
