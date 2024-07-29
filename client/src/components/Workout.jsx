@@ -14,11 +14,11 @@ export default function Workout() {
     };
   return (
     <>
-    <Generator setProccededData={handleSetProccededData} setIsLoading={setIsLoading} />
+    <Generator setProccededData={handleSetProccededData} setIsLoading={setIsLoading}  />
       {isLoading  ? (
         <Loading />
       ) : (
-        ProccededData && <WorkoutExcersice data={ProccededData} />
+        ProccededData && <WorkoutExcersice data={ProccededData} id={'MakeWorkout'} />
       )}
     </>
   );

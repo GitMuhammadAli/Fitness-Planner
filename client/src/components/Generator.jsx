@@ -43,6 +43,7 @@ export default function Generator({ setProccededData, setIsLoading }) {
     setScheme(scheme);
   };
 
+
   const sendMuscleToBackend = async () => {
     setIsLoading(true);  
     console.log("inside sendMuscleToBackend");
@@ -51,6 +52,9 @@ export default function Generator({ setProccededData, setIsLoading }) {
       Muscle,
       Scheme,
     };
+    
+    window.location.href = '#MakeWorkout';
+
 
     console.log("Sending data to backend:", data);
     try {
@@ -136,7 +140,7 @@ export default function Generator({ setProccededData, setIsLoading }) {
         <Schemes Schemes={schemes} sendSchemes={handleSchemes} />
       )}
 
-      <Button onClick={sendMuscleToBackend}>Generate Workout</Button>
+      <Button onClick={sendMuscleToBackend}  >Generate Workout</Button>
     </SectionWrapper>
   );
 }
