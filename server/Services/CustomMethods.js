@@ -85,19 +85,15 @@ exports.getWorkoutSchemes = async () => {
 
 exports.getWorkouts = async (workoutCategory, muscles, schemeName) => {
   try {
-    
     let workout = [];
 
-    if(workoutCategory === 'upper_lower'){
-      workout = ['upper_lower']
-
-      return workout 
+    if (workoutCategory === 'upper_lower') {
+      workout = ['upper_lower'];
+      return workout;
     }
-
 
     const flattenWorkouts = (workouts) => {
       const flatSet = new Set();
-
       const processObject = (obj) => {
         for (const key in obj) {
           if (Array.isArray(obj[key])) {
@@ -107,7 +103,6 @@ exports.getWorkouts = async (workoutCategory, muscles, schemeName) => {
           }
         }
       };
-
       processObject(workouts);
       return Array.from(flatSet);
     };
@@ -122,30 +117,28 @@ exports.getWorkouts = async (workoutCategory, muscles, schemeName) => {
         'description',
         'substitutes',
         [Sequelize.json(`workouts.${workoutCategory}`), 'workouts'],
-        [Sequelize.literal(`COALESCE((schemes->'${schemeName}'->>'repRanges')::text, 'null')`), 'repRanges'],
-        [Sequelize.literal(`COALESCE((schemes->'${schemeName}'->>'ratio')::text, 'null')`), 'ratio'],
-        [Sequelize.literal(`COALESCE((schemes->'${schemeName}'->>'rest')::text, 'null')`), 'rest']
+        [Sequelize.json(`schemes.${schemeName}.repRanges`), 'repRanges'],
+        [Sequelize.json(`schemes.${schemeName}.ratio`), 'ratio'],
+        [Sequelize.json(`schemes.${schemeName}.rest`), 'rest']
       ],
       logging: console.log
     });
 
-    console.log('Fetched exercises:', exercises);
-
     const safeResults = exercises.map(exercise => {
       try {
-        const workouts = exercise.workouts ? flattenWorkouts(exercise.workouts) : [];
+        const data = exercise.dataValues;
         return {
-          name: exercise.name,
-          type: exercise.type,
-          variants: exercise.variants,
-          unit: exercise.unit,
-          muscles: exercise.muscles,
-          description: exercise.description,
-          substitutes: exercise.substitutes,
-          workouts: workouts,
-          repRanges: exercise.repRanges ? JSON.parse(exercise.repRanges) : [8, 12],
-          ratio: exercise.ratio ? JSON.parse(exercise.ratio) : [3, 2],
-          rest: exercise.rest ? JSON.parse(exercise.rest) : [60, 60]
+          name: data.name,
+          type: data.type,
+          variants: data.variants,
+          unit: data.unit,
+          muscles: data.muscles,
+          description: data.description,
+          substitutes: data.substitutes,
+          workouts: data.workouts ? flattenWorkouts(data.workouts) : [],
+          repRanges: parseJsonOrDefault(data.repRanges, [8, 12]),
+          ratio: parseJsonOrDefault(data.ratio, [3, 2]),
+          rest: parseJsonOrDefault(data.rest, [60, 60])
         };
       } catch (err) {
         console.error("Error processing exercise data:", err);
@@ -165,7 +158,6 @@ exports.getWorkouts = async (workoutCategory, muscles, schemeName) => {
     const totalExercises = 10; 
     const exercisesPerGroup = Math.floor(totalExercises / muscles.length);
     const remainingExercises = totalExercises % muscles.length;
-
 
     const getRandomExercises = (exerciseList, count) => {
       const selected = [];
@@ -194,6 +186,15 @@ exports.getWorkouts = async (workoutCategory, muscles, schemeName) => {
     throw error;
   }
 };
+
+const parseJsonOrDefault = (jsonString, defaultValue) => {
+  try {
+    return jsonString ? JSON.parse(jsonString) : defaultValue;
+  } catch {
+    return defaultValue;
+  }
+};
+
 
 
 

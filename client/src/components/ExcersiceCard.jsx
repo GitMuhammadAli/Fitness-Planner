@@ -66,9 +66,12 @@ export default function ExerciseCard(props) {
           </div>
         )}
         {exercise.rest && exercise.rest.length > 0 && (
+
+
+
           <div className="flex flex-col p-2 rounded border-[1.5px] border-solid border-[#232222] w-full">
             <h3 className="capitalize text-[#946f6f] text-sm">Rest</h3>
-            <p className="font-medium">{exercise.rest[0]} sec</p>
+            <p className="font-medium">{exercise.rest.join(" to ")} sec</p>
           </div>
         )}
 
