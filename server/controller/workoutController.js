@@ -7,7 +7,9 @@ const workoutController = {
       const tempos = await Tempo.findAll();
       res.json(tempos);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -16,7 +18,9 @@ const workoutController = {
       const schemes = await Scheme.findAll();
       res.json(schemes);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -25,7 +29,9 @@ const workoutController = {
       const workout = await CustomMethods.getWorkoutsCategory();
       res.json(workout);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -34,7 +40,9 @@ const workoutController = {
       const exercises = await Exercise.findAll();
       res.json(exercises);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -47,7 +55,9 @@ const workoutController = {
         res.status(404).json({ message: "Exercise not found" });
       }
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -56,7 +66,9 @@ const workoutController = {
       const workoutSchemes = await CustomMethods.getWorkoutSchemes();
       res.json(workoutSchemes);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -65,7 +77,9 @@ const workoutController = {
       const workouts = await Workout.findAll();
       res.json(workouts);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -74,7 +88,9 @@ const workoutController = {
       const workout = await CustomMethods.getWorkoutsindividualtype();
       res.json(workout);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -83,7 +99,9 @@ const workoutController = {
       const workout = await CustomMethods.getBroSplitWorkoutstype();
       res.json(workout);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -92,7 +110,9 @@ const workoutController = {
       const workout = await CustomMethods.getBodybuilderSplitWorkoutstype();
       res.json(workout);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
     }
   },
 
@@ -101,16 +121,82 @@ const workoutController = {
       const workout = await CustomMethods.getUpperLowerWorkoutstype();
       res.json(workout);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: err.message });
+    }
+  },
+
+  async getdata(req, res) {
+    try {
+      const { Workout, Muscle, Scheme } = req.body;
+
+      console.log(Workout, Muscle, Scheme);
+      const results = await CustomMethods.getWorkouts(Workout, Muscle, Scheme);
+      console.log( "data was" + results);
+      res.status(200).json(results);
+
+      
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+   
+  },
+
+ 
+
+ 
+
+  async getWorkoutfromExcersice(req, res) {
+    try {
+     
+    } catch (error) {
+      console.error("Error:", error.message);
     }
   },
 
 
-  async getdata(req, res) {
-   const data =  req.body;
-   console.log(data);
-  }
 
-};
+
+
+
+
+
+
+
+
+
+
+
+  async TestGenerateWorkout(req, res) {
+    const workoutCategory = "upper_lower";
+    const muscles = [ 'upper' ];
+    const schemeName = "growth_hypertrophy";
+  
+    try {
+      const results = await CustomMethods.getWorkouts(
+        workoutCategory,
+        muscles,
+        schemeName
+      );
+      const count = results.length;
+      console.log(`Count is ${count}`);
+      console.log(JSON.stringify(results, null, 2));
+  
+      res.status(200).json({
+        success: true,
+        count,
+        data: results
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  },
+  
+}  
 
 module.exports = workoutController;

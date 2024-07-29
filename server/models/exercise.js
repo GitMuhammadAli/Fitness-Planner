@@ -35,11 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     workouts: {
-      type: DataTypes.JSON,
+      type: DataTypes.JSONB,
       allowNull: true
     },
     schemes: {
-      type: DataTypes.JSON,
+      type: DataTypes.JSONB, 
       allowNull: true
     },
     createdAt: {

@@ -1,47 +1,47 @@
 import React, { useState, useEffect } from 'react';
 
-const Model = ({ selectedCategory, workoutTypes, onSelectedItemsChange }) => {
+const Model = ({ Workout, workoutTypes, onMuscleChange }) => {
   const [showModel, setShowModel] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [Muscle, setMuscle] = useState([]);
 
   const toggleShowModel = () => {
     setShowModel(prevShowModel => !prevShowModel);
   };
 
   const getDisplayText = () => {
-    if (selectedItems.length > 0) {
-      return selectedItems.map(item => item.replaceAll("_", " ")).join(", ");
+    if (Muscle.length > 0) {
+      return Muscle.map(item => item.replaceAll("_", " ")).join(", ");
     }
-    return selectedCategory.replaceAll("_", " ");
+    return Workout.replaceAll("_", " ");
   };
 
   const handleItemClick = (item) => {
-    let newSelectedItems;
+    let newMuscle;
   
-    if (selectedCategory === "individual") {
-      if (selectedItems.includes(item)) {
-        newSelectedItems = selectedItems.filter(i => i !== item);
-      } else if (selectedItems.length < 3) {
-        newSelectedItems = [...selectedItems, item];
+    if (Workout === "individual") {
+      if (Muscle.includes(item)) {
+        newMuscle = Muscle.filter(i => i !== item);
+      } else if (Muscle.length < 3) {
+        newMuscle = [...Muscle, item];
       } else {
         return;
       }
   
-      if (newSelectedItems.length === 3) {
+      if (newMuscle.length === 3) {
         toggleShowModel();
       }
     } else {
-      newSelectedItems = [item];
+      newMuscle = [item];
       toggleShowModel();
     }
   
-    setSelectedItems(newSelectedItems);
-    onSelectedItemsChange(newSelectedItems);
+    setMuscle(newMuscle);
+    onMuscleChange(newMuscle);
   };
 
   useEffect(() => {
-    setSelectedItems([]);
-  }, [selectedCategory]);
+    setMuscle([]);
+  }, [Workout]);
 
   return (
     <div className="bg-neutral-950 border-[#946f6f] border border-solid py-4 rounded-lg flex flex-col justify-center items-center p-4">
@@ -53,15 +53,15 @@ const Model = ({ selectedCategory, workoutTypes, onSelectedItemsChange }) => {
       </button>
       {showModel && (
         <div className="flex flex-col px-3 pb-3 py-3">
-          {selectedCategory === "Select the Muscle Group" ? (
+          {Workout === "Select the Muscle Group" ? (
             <p className='capitalize bg-[#946f6f] rounded-md p-1' >Please select poison</p>
           ) : (
             <ul className='flex flex-col'>
               {workoutTypes.length > 0 ? (
                 workoutTypes.map((type, index) => {
-                  const item = selectedCategory === "individual" ? type.muscle_group : type.type;
+                  const item = Workout === "upper_lower" ? type.type : type.muscle_group;
                   const itemText = item ? item.replaceAll("_", " ") : "N/A";
-                  const isSelected = selectedItems.includes(item);
+                  const isSelected = Muscle.includes(item);
 
                   return (
                     <button 

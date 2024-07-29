@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
 function Schemes({ Schemes, sendSchemes }) {
-  const [selectedScheme, setSelectedScheme] = useState(null);
+  const [Scheme, setScheme] = useState(null);
 
   const onCategorySelect = (e) => {
     const selected = Schemes.find(scheme => scheme.name === e);
-    setSelectedScheme(selected);
+    setScheme(selected);
     sendSchemes(selected.name);
   };
 
-  // selectedScheme && console.log(selectedScheme.name);
+  // Scheme && console.log(Scheme.name);
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
       {Schemes.map((cat, index) => (

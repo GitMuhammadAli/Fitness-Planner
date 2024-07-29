@@ -12,10 +12,10 @@ import Header from "./Header";
 import Model from "./Model";
 import Schemes from "./Schemes";
 import CategoryButtons from "./Categories";
-import { senddata } from "../Api";
+import { senddata, ProceedData } from "../Api";
 import Button from "./Button";
 
-export default function Generator() {
+export default function Generator({ setProccededData, setIsLoading }) {
   const { categories, error: categoryError } = useFetchCategories();
   const { individualType, error: individualTypeError } =
     WorkoutindividualType();
@@ -26,44 +26,47 @@ export default function Generator() {
   const { broSplitType, error: broSplitError } = useFetchBroSplitTypeWorkouts();
   const { schemes, error: schemeError } = useFetchScheme();
 
-  const [selectedCategory, setSelectedCategory] = useState(
-    "Select the Muscle Group"
-  );
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedScheme, setSelectedScheme] = useState(null);
+  const [Workout, setWorkout] = useState("Select the Muscle Group");
+  const [Muscle, setMuscle] = useState([]);
+  const [Scheme, setScheme] = useState(null);
 
-  const handleSetSelectedCategory = (category) => {
-    setSelectedCategory(category);
-    setSelectedItems([]);
+  const handleSetWorkout = (category) => {
+    setWorkout(category);
+    setMuscle([]);
   };
 
-  const handleSelectedItemsChange = (items) => {
-    setSelectedItems(items);
+  const handleMuscleChange = (items) => {
+    setMuscle(items);
   };
 
-  const handleSelectedSchemes = (scheme) => {
-    setSelectedScheme(scheme);
+  const handleSchemes = (scheme) => {
+    setScheme(scheme);
   };
 
-  const sendSelectedItemsToBackend = async () => {
-    console.log("inseide sendSelectedItemsToBackend");
+  const sendMuscleToBackend = async () => {
+    setIsLoading(true);  
+    console.log("inside sendMuscleToBackend");
     const data = {
-      selectedCategory,
-      selectedItems,
-      selectedScheme,
+      Workout,
+      Muscle,
+      Scheme,
     };
 
     console.log("Sending data to backend:", data);
     try {
-      const response = await senddata(data);
+      const response = await ProceedData(data);
       console.log("Backend response:", response.data);
+      setProccededData(response.data);
+
+      const sendResponse = await senddata(data);
+      console.log("Backend response:", sendResponse.data);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   const getWorkoutTypes = () => {
-    switch (selectedCategory) {
+    switch (Workout) {
       case "individual":
         return individualType;
       case "upper_lower":
@@ -93,7 +96,7 @@ export default function Generator() {
       ) : (
         <CategoryButtons
           categories={categories}
-          onCategorySelect={handleSetSelectedCategory}
+          onCategorySelect={handleSetWorkout}
         />
       )}
 
@@ -116,9 +119,9 @@ export default function Generator() {
         </p>
       ) : (
         <Model
-          selectedCategory={selectedCategory}
+          Workout={Workout}
           workoutTypes={getWorkoutTypes()}
-          onSelectedItemsChange={handleSelectedItemsChange}
+          onMuscleChange={handleMuscleChange}
         />
       )}
 
@@ -130,10 +133,10 @@ export default function Generator() {
       {schemeError ? (
         <p>Error fetching schemes: {schemeError}</p>
       ) : (
-        <Schemes Schemes={schemes} sendSchemes={handleSelectedSchemes} />
+        <Schemes Schemes={schemes} sendSchemes={handleSchemes} />
       )}
 
-      <Button onClick={sendSelectedItemsToBackend}>Generate Workout</Button>
+      <Button onClick={sendMuscleToBackend}>Generate Workout</Button>
     </SectionWrapper>
   );
 }

@@ -31,3 +31,9 @@ export const fetchExercises = () => {
 export const senddata = (data) => {
   return axios.post('http://localhost:9000/data', data, { withCredentials: true });
 };
+
+
+
+export const ProceedData = (data) => {
+  return axios.post('http://localhost:9000/data', data, { withCredentials: true });
+};

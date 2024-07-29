@@ -44,6 +44,7 @@ export function WorkoutindividualType() {
     getIndividualType();
   }, []);
   return { individualType, error };
+  
 }
 
 export function useFetchUpperLowerTypeWorkouts() {
@@ -63,6 +64,7 @@ export function useFetchUpperLowerTypeWorkouts() {
   }, []);
 
   return { upperLowerType, error };
+  
 }
 
 
@@ -83,6 +85,7 @@ export function useFetchBodybuilderSplitTypeWorkouts() {
   }, []);
 
   return { bodybuilderSplitType, error };
+  
 }
 
 
@@ -103,4 +106,6 @@ export function useFetchBroSplitTypeWorkouts() {
   }, []);
 
   return { broSplitType, error };
+  
+
 }

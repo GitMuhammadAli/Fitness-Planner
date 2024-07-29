@@ -18,11 +18,11 @@ module.exports = {
         allowNull: false
       },
       meta: {
-        type: Sequelize.JSON,
+        type: Sequelize.JSONB,  // Changed to JSONB
         allowNull: true
       },
       variants: {
-        type: Sequelize.JSON,
+        type: Sequelize.JSONB,  // Changed to JSONB
         allowNull: true
       },
       unit: {
@@ -42,20 +42,22 @@ module.exports = {
         allowNull: true
       },
       workouts: {
-        type: Sequelize.JSON,
+        type: Sequelize.JSONB,  // Changed to JSONB
         allowNull: true
       },
       schemes: {
-        type: Sequelize.JSON,
+        type: Sequelize.JSONB,  // Changed to JSONB
         allowNull: true
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')  // Added default value
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')  // Added default value
       }
     });
   },
