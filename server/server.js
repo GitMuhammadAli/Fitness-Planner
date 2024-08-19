@@ -15,6 +15,15 @@ app.use("/", workoutRoutes);
 
 connectDB();
 
+app.get('/health', async (req, res) => {
+  try {
+    await sequelize.authenticate();
+    res.status(200).send('Database connection is healthy');
+  } catch (error) {
+    res.status(500).send('Database connection failed');
+  }
+});
+
 const PORT = process.env.PORT || 9000;
 
 app.listen(PORT, () => {

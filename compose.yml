@@ -1,0 +1,61 @@
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${DB_USER:-myuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-mypass}
+      POSTGRES_DB: ${DB_NAME:-Stay-fit}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # Node.js Server Service
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-myuser}
+      DB_PASSWORD: ${DB_PASSWORD:-mypass}
+      DB_NAME: ${DB_NAME:-Stay-fit}
+      NODE_ENV: ${NODE_ENV:-development}
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # React Client Service
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - "1778:1778"
+    environment:
+      REACT_APP_API_URL: http://server:9000
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
